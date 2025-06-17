@@ -7,10 +7,10 @@ const Contact = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Contact Page</Text>
       <Text>This is a about page</Text>
-      <Link href="/" style={styles.link}>
+      {/* <Link href="/" style={styles.link}>
         {" "}
         Back To Home{" "}
-      </Link>
+      </Link> */}
     </View>
   );
 };

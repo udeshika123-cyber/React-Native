@@ -1,11 +1,29 @@
-import { Slot } from "expo-router";
-import { View, Text } from "react-native";
+import { StyleSheet, Text, useColorScheme, View } from "react-native";
+import { Stack } from "expo-router";
+import { Colors } from "../constants/Colors";
+import { StatusBar } from "expo-status-bar";
 
-export default function Layout() {
+const RootLayout = () => {
+  const ColorScheme = useColorScheme();
+  const theme = Colors[ColorScheme] ?? Colors.light;
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Slot />
-      {/* <Text>Layout is working ✅</Text> */}
-    </View>
+    <>
+      <StatusBar value="auto" />
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: theme.navBackground },
+          headerTintColor: theme.title,
+        }}
+      >
+        <Stack.Screen name="index" options={{ title: "Home" }} />
+        <Stack.Screen name="about" options={{ title: "About" }} />
+        <Stack.Screen name="contact" options={{ title: "Contact" }} />
+      </Stack>
+    </>
   );
-}
+};
+
+export default RootLayout;
+
+const styles = StyleSheet.create({});

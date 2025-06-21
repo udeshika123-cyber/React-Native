@@ -17,6 +17,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "dev.sheflie.netninja",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

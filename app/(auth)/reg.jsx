@@ -42,6 +42,9 @@ const Reg = () => {
           <Text style={{ color: "#f2f2f2" }}>Register</Text>
         </ThemedButton>
         <Spacer height={100} />
+        <ThemedText style={{ textAlign: "center" }}>
+          Already have an account
+        </ThemedText>
         <Link href={"/login"}>
           <ThemedText style={{ textAlign: "center" }}>Login Instead</ThemedText>
         </Link>

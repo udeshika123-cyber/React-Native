@@ -2,13 +2,14 @@ import { StyleSheet, Text, useColorScheme, View } from "react-native";
 import { Stack } from "expo-router";
 import { Colors } from "../constants/Colors";
 import { StatusBar } from "expo-status-bar";
+import { UserProvider } from "../contexts/UserContext";
 
 const RootLayout = () => {
   const ColorScheme = useColorScheme();
   const theme = Colors[ColorScheme] ?? Colors.light;
 
   return (
-    <>
+    <UserProvider>
       <StatusBar value="auto" />
       <Stack
         screenOptions={{
@@ -23,7 +24,7 @@ const RootLayout = () => {
         {/* <Stack.Screen name="about" options={{ title: "About" }} />
         <Stack.Screen name="contact" options={{ title: "Contact" }} /> */}
       </Stack>
-    </>
+    </UserProvider>
   );
 };
 

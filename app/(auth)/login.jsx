@@ -14,12 +14,12 @@ import { useUser } from "../../hooks/useUser";
 const Login = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const { user } = useUser();
+  const { login } = useUser();
 
-  const handleSubmit = () => {
-    console.log("User:", user);
-
-    console.log("Login form submitted!", email, password);
+  const handleSubmit = async () => {
+    try {
+      await login(email, password);
+    } catch (error) {}
   };
   return (
     <ThemedView style={styles.container}>

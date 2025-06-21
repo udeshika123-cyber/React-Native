@@ -1,6 +1,7 @@
 import { Keyboard, StyleSheet, Text } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
+import { useState } from "react";
 
 import ThemedView from "../../components/ThemedView";
 import ThemedTextInput from "../../components/ThemedTextInput";
@@ -8,12 +9,43 @@ import ThemedText from "../../components/ThemedText";
 import ThemedButton from "../../components/ThemedButton";
 import Spacer from "../../components/Spacer";
 import { TouchableWithoutFeedback } from "react-native";
+import { useUser } from "../../hooks/useUser";
+
 const Reg = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const handleSubmit = () => {
-    console.log("Register form submitted!", email, password);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { register } = useUser();
+  // const handleSubmit = async () => {
+  //   try {
+  //     await reg(email, password);
+  //   } catch (error) {}
+  // };
+  const handleSubmit = async () => {
+    const trimmedEmail = email.trim();
+
+    if (
+      !trimmedEmail ||
+      !trimmedEmail.includes("@") ||
+      !trimmedEmail.includes(".")
+    ) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
+
+    try {
+      await register(trimmedEmail, password);
+    } catch (error) {
+      console.error("Registration Error:", error);
+      alert(error.message || "Registration failed.");
+    }
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ThemedView style={styles.container}>

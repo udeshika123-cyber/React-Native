@@ -1,24 +1,20 @@
-// import { StyleSheet, Text, View } from "react-native";
-// import React from "react";
 import { createContext, useEffect, useState } from "react";
 import { account } from "../lib/appwrite";
 import { ID } from "react-native-appwrite";
 
 export const UserContext = createContext();
+
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [authChecked, serAuthChecked] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
   async function login(email, password) {
     try {
-      // await account.deleteSession("current");
       await account.createEmailPasswordSession(email, password);
-
       const response = await account.get();
       setUser(response);
-    } catch (err) {
-      console.error("Login Error:", err);
-      throw err;
+    } catch (error) {
+      throw Error(error.message);
     }
   }
 
@@ -27,7 +23,7 @@ export function UserProvider({ children }) {
       await account.create(ID.unique(), email, password);
       await login(email, password);
     } catch (error) {
-      throw error(error.message);
+      throw Error(error.message);
     }
   }
 
@@ -35,25 +31,35 @@ export function UserProvider({ children }) {
     await account.deleteSession("current");
     setUser(null);
   }
-  async function getIntialUserValue() {
+
+  async function getInitialUserValue() {
     try {
-      const response = await account.get();
-      setUser(response);
-    } catch (err) {
+      const res = await account.get();
+      setUser(res);
+    } catch (error) {
       setUser(null);
     } finally {
-      serAuthChecked(true);
+      setAuthChecked(true);
     }
   }
 
   useEffect(() => {
-    getIntialUserValue();
+    getInitialUserValue();
   }, []);
+
   return (
     <UserContext.Provider
-      value={{ user, setUser, login, register, logout, authChecked }}
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        authChecked,
+      }}
     >
       {children}
     </UserContext.Provider>
   );
 }
+
+// Wrap the UserProvider component around the root layout stack

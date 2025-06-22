@@ -2,6 +2,7 @@ import { Keyboard, StyleSheet, Text } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
 import { useState } from "react";
+import { Colors } from "../../constants/Colors";
 
 import ThemedView from "../../components/ThemedView";
 import ThemedTextInput from "../../components/ThemedTextInput";
@@ -14,14 +15,17 @@ import { useUser } from "../../hooks/useUser";
 const Reg = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
-  const { register } = useUser();
+  const { register } = useUser(null);
+
   // const handleSubmit = async () => {
   //   try {
-  //     await reg(email, password);
+  //     await register(email, password);
   //   } catch (error) {}
   // };
   const handleSubmit = async () => {
+    setError(null);
     const trimmedEmail = email.trim();
 
     if (
@@ -29,12 +33,13 @@ const Reg = () => {
       !trimmedEmail.includes("@") ||
       !trimmedEmail.includes(".")
     ) {
-      alert("Please enter a valid email address.");
+      setError("Please enter a valid email address.");
+
       return;
     }
 
     if (!password || password.length < 6) {
-      alert("Password must be at least 6 characters.");
+      setError("Password must be at least 6 characters.");
       return;
     }
 
@@ -73,6 +78,8 @@ const Reg = () => {
         <ThemedButton onPress={handleSubmit}>
           <Text style={{ color: "#f2f2f2" }}>Register</Text>
         </ThemedButton>
+        <Spacer />
+        {error && <Text style={styles.error}>{error}</Text>}
         <Spacer height={100} />
         <ThemedText style={{ textAlign: "center" }}>
           Already have an account
@@ -99,5 +106,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 25,
     textAlign: "center",
+  },
+  error: {
+    color: Colors.warning,
+    padding: 10,
+    backgroundColor: "#f5c1c8",
+    borderColor: Colors.warning,
+    borderRadius: 1,
+    borderWidth: 6,
+    marginHorizontal: 10,
   },
 });

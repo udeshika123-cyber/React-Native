@@ -1,19 +1,28 @@
-import { StyleSheet } from "react-native";
-import ThemedView from "../../components/ThemedView";
-import ThemedText from "../../components/ThemedText";
+import { StyleSheet, Text } from "react-native";
+import { useUser } from "../../hooks/useUser";
+
 import Spacer from "../../components/Spacer";
+import ThemedText from "../../components/ThemedText";
+import ThemedView from "../../components/ThemedView";
+
+import ThemedButton from "../../components/ThemedButton";
 
 const Profile = () => {
+  const { logout, user } = useUser();
+
   return (
     <ThemedView style={styles.container}>
-      <ThemedText title style={styles.heading}>
-        Your Email
+      <ThemedText title={true} style={styles.heading}>
+        {user.email}
       </ThemedText>
       <Spacer />
-      <ThemedText style={{ fontSize: 18 }}>
-        Time to start reading some books.
-      </ThemedText>
-      <Spacer height={20} />
+
+      <ThemedText>Time to start reading some books...</ThemedText>
+      <Spacer />
+
+      <ThemedButton onPress={logout} style={styles.button}>
+        <Text style={{ color: "#f2f2f2" }}>Logout</Text>
+      </ThemedButton>
     </ThemedView>
   );
 };
@@ -25,12 +34,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
-    gap: 20,
   },
+
   heading: {
     fontWeight: "bold",
-    fontSize: 25,
+    fontSize: 18,
     textAlign: "center",
   },
 });

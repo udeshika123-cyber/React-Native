@@ -74,7 +74,18 @@ export function BooksProvider({ children }) {
       .documents `;
     if (user) {
       fetchBooks();
-      unsubscribe = client.subscribe;
+      unsubscribe = client.subscribe(channel, (response) => {
+        const { payload, events } = response;
+
+        if (events[0].includes("create")) {
+          setBooks((prevBooks) => [...prevBooks, payload]);
+        }
+        if (events[0].includes("delete")) {
+          setBooks((prevBooks) =>
+            prevBooks.filter((book) => book.$id !== payload.$id)
+          );
+        }
+      });
     } else {
       setBooks([]);
     }
